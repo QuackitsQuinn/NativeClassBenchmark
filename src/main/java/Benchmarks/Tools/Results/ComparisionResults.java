@@ -1,12 +1,12 @@
 package Benchmarks.Tools.Results;
 
 public class ComparisionResults {
-    public enum Bases {
+    public enum Base {
         NATIVE,
         JAVA
     }
     private final TestResults nativeTest,javaTest;
-    private final Bases faster;
+    private final Base faster;
     private final long difference;
 
     /**
@@ -19,9 +19,9 @@ public class ComparisionResults {
         this.javaTest = javaTest;
         difference = Math.abs(this.nativeTest.getElapsedTime()-this.javaTest.getElapsedTime());
         if (this.nativeTest.getElapsedTime() < this.javaTest.getElapsedTime()) {
-            faster = Bases.NATIVE;
+            faster = Base.NATIVE;
         } else {
-            faster = Bases.JAVA;
+            faster = Base.JAVA;
         }
         }
 
@@ -33,7 +33,7 @@ public class ComparisionResults {
         return javaTest;
     }
 
-    public Bases getFaster() {
+    public Base getFaster() {
         return faster;
     }
 
