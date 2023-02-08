@@ -11,8 +11,17 @@ public class CompTest {
         nativeBase = Native;
     }
     public ComparisionResults run(int times) {
-        javaResults = javaBase.runTest(times);
-        nativeResults = nativeBase.runTest(times);
+
+        Thread javaThread = new Thread(() -> javaResults = javaBase.runTest(times));
+        Thread nativeThread = new Thread(() -> nativeResults = nativeBase.runTest(times));
+        javaThread.start();
+        nativeThread.start();
+        try {
+            javaThread.join();
+            nativeThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return new ComparisionResults(nativeResults,javaResults);
     }
 
