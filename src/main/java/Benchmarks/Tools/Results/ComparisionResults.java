@@ -1,16 +1,8 @@
 package Benchmarks.Tools.Results;
 
+import Benchmarks.Tools.Base;
+
 public class ComparisionResults {
-    /**
-     * Enum containing each base type <p>
-     * NATIVE - native based test<p>
-     * JAVA - java based test
-     */
-    // TODO: Move to own file
-    public enum Base {
-        NATIVE,
-        JAVA
-    }
     private final TestResults nativeTest,javaTest;
     private final Base faster;
     private final long difference;
