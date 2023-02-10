@@ -2,8 +2,8 @@ package Benchmarks.Tools;
 
 /**
  * Enum containing each base type <p>
- * NATIVE - native based test<p>
- * JAVA - java based test
+ * NATIVE - native based benchmark<p>
+ * JAVA - java based benchmark
  */
 public enum Base {
     NATIVE,

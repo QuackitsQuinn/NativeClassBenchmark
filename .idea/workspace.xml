@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7612046a-6118-4390-a28e-bcabd715e1ac" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/Base.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/BenchmarkRunner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/AbstractTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/AbstractBenchmark.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/Base.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/Base.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/CompTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/ComparisonBenchmark.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/Results/ComparisionResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/Results/ComparisionResults.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/Results/TestResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/Results/BenchmarkResults.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Benchmarks/Tools/TestRunner.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

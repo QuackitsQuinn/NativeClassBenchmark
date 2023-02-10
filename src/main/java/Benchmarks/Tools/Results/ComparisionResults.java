@@ -3,20 +3,20 @@ package Benchmarks.Tools.Results;
 import Benchmarks.Tools.Base;
 
 public class ComparisionResults {
-    private final TestResults nativeTest,javaTest;
+    private final BenchmarkResults nativeBenchmark, javaBenchmark;
     private final Base faster;
     private final long difference;
 
     /**
-     * Results of a native/java comparison test
-     * @param nativeTest the native based test
-     * @param javaTest the java based test
+     * Results of a native/java comparison benchmark
+     * @param nativeBenchmark the native based benchmark
+     * @param javaBenchmark the java based benchmark
      */
-    public ComparisionResults(TestResults nativeTest,TestResults javaTest) {
-        this.nativeTest = nativeTest;
-        this.javaTest = javaTest;
-        difference = Math.abs(this.nativeTest.getElapsedTime()-this.javaTest.getElapsedTime());
-        if (this.nativeTest.getElapsedTime() < this.javaTest.getElapsedTime()) {
+    public ComparisionResults(BenchmarkResults nativeBenchmark, BenchmarkResults javaBenchmark) {
+        this.nativeBenchmark = nativeBenchmark;
+        this.javaBenchmark = javaBenchmark;
+        difference = Math.abs(this.nativeBenchmark.getElapsedTime()-this.javaBenchmark.getElapsedTime());
+        if (this.nativeBenchmark.getElapsedTime() < this.javaBenchmark.getElapsedTime()) {
             faster = Base.NATIVE;
         } else {
             faster = Base.JAVA;
@@ -24,19 +24,19 @@ public class ComparisionResults {
         }
 
     /**
-     * Get the results of the native test
-     * @return the results of the native test
+     * Get the results of the native benchmark
+     * @return the results of the native benchmark
      */
-    public TestResults getNativeTest() {
-        return nativeTest;
+    public BenchmarkResults getNativeBenchmark() {
+        return nativeBenchmark;
     }
 
     /**
-     * Get the results of the java test
-     * @return the results of the java test
+     * Get the results of the java benchmark
+     * @return the results of the java benchmark
      */
-    public TestResults getJavaTest() {
-        return javaTest;
+    public BenchmarkResults getJavaBenchmark() {
+        return javaBenchmark;
     }
 
     /**
@@ -48,8 +48,8 @@ public class ComparisionResults {
     }
 
     /**
-     * Get the difference in time between the two tests. Always positive.
-     * @return the difference in time between the two tests
+     * Get the difference in time between the two benchmarks. Always positive.
+     * @return the difference in time between the two benchmarks
      */
     public long getDifference() {
         return difference;
