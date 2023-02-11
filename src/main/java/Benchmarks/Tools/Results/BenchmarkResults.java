@@ -1,5 +1,6 @@
 package Benchmarks.Tools.Results;
 
+
 /**
  * Small class for random statistical data from benchmarks such as time per command run and elapsed time.
  */

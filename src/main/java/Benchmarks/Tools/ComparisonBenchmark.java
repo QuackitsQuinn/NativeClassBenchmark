@@ -1,6 +1,6 @@
 package Benchmarks.Tools;
 
-import Benchmarks.Tools.Results.ComparisionResults;
+import Benchmarks.Tools.Results.ComparisonResults;
 import Benchmarks.Tools.Results.BenchmarkResults;
 /**
  * Class to compare two benchmarks
@@ -8,17 +8,18 @@ import Benchmarks.Tools.Results.BenchmarkResults;
 public class ComparisonBenchmark {
     private final AbstractBenchmark javaBase,nativeBase;
     private BenchmarkResults javaResults,nativeResults;
-    public ComparisonBenchmark(AbstractBenchmark java, AbstractBenchmark Native) {
+    private final Integer times;
+    public ComparisonBenchmark(AbstractBenchmark java, AbstractBenchmark Native, Integer times) {
         javaBase = java;
         nativeBase = Native;
+        this.times = times;
     }
 
     /**
      * Runs the benchmarks in parallel with threading and returns the results
-     * @param times the amount of times to run the benchmark
      * @return the results of the Benchmark
      */
-    public ComparisionResults run(int times) {
+    public ComparisonResults run() {
 
         Thread javaThread = new Thread(() -> javaResults = javaBase.runBenchmark(times));
         Thread nativeThread = new Thread(() -> nativeResults = nativeBase.runBenchmark(times));
@@ -30,7 +31,7 @@ public class ComparisonBenchmark {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return new ComparisionResults(nativeResults,javaResults);
+        return new ComparisonResults(nativeResults,javaResults);
     }
     /**
      * Gets the results of the java benchmark

@@ -2,7 +2,7 @@ package Benchmarks.Tools.Results;
 
 import Benchmarks.Tools.Base;
 
-public class ComparisionResults {
+public class ComparisonResults {
     private final BenchmarkResults nativeBenchmark, javaBenchmark;
     private final Base faster;
     private final long difference;
@@ -12,7 +12,7 @@ public class ComparisionResults {
      * @param nativeBenchmark the native based benchmark
      * @param javaBenchmark the java based benchmark
      */
-    public ComparisionResults(BenchmarkResults nativeBenchmark, BenchmarkResults javaBenchmark) {
+    public ComparisonResults(BenchmarkResults nativeBenchmark, BenchmarkResults javaBenchmark) {
         this.nativeBenchmark = nativeBenchmark;
         this.javaBenchmark = javaBenchmark;
         difference = Math.abs(this.nativeBenchmark.getElapsedTime()-this.javaBenchmark.getElapsedTime());
