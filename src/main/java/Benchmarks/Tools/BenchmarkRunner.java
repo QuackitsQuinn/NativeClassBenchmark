@@ -22,6 +22,7 @@ public class BenchmarkRunner {
     private void printBenchmarkResults(ComparisonResults benchmark) {
         BenchmarkResults javaResults = benchmark.getJavaBenchmark();
         BenchmarkResults nativeResults = benchmark.getNativeBenchmark();
+        System.out.println("┌┤"+javaResults.getName());
         System.out.println("┌┤Java Results");
         System.out.println("├┤ Total Time: " + javaResults.getElapsedTime() + "ns");
         System.out.println("├┤ Average Time Per Run: " + javaResults.getAvgPerRun() + "ns");

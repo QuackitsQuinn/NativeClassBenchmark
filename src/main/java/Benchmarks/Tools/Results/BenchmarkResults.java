@@ -8,13 +8,15 @@ public class BenchmarkResults {
     private final long startTime,endTime,elapsedTime;
     private final int runTimes;
     private final double avgPerRun;
+    private final String name;
 
-    public BenchmarkResults(long startTime, long endTime, int runTimes) {
+    public BenchmarkResults(long startTime, long endTime, int runTimes, String name) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.runTimes = runTimes;
         this.elapsedTime = endTime-startTime;
         this.avgPerRun = (double) elapsedTime / (double) runTimes;
+        this.name = name;
     }
 
     /**
@@ -56,5 +58,13 @@ public class BenchmarkResults {
      */
     public double getAvgPerRun() {
         return avgPerRun;
+    }
+
+    /**
+     * Get the name of the benchmark
+     * @return name of the benchmark
+     */
+    public String getName() {
+        return name;
     }
 }

@@ -32,10 +32,11 @@ public abstract class AbstractBenchmark {
         for (int i = 0; i < times; i++) {
             execute();
         }
-        return new BenchmarkResults(startTime,System.nanoTime(),times);
+        return new BenchmarkResults(startTime,System.nanoTime(),times,testName);
     }
     /**
-     * Set the name of the benchmark. Required for the benchmark to run.
+     * Set the name of the benchmark. Required for the benchmark to run. <p>
+     * Put in the setup method or constructor.
      * @param testName The name of the benchmark.
      */
     protected void setTestName(String testName) {
