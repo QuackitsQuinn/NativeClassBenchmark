@@ -9,10 +9,12 @@ public class ComparisonBenchmark {
     private final AbstractBenchmark javaBase,nativeBase;
     private BenchmarkResults javaResults,nativeResults;
     private final Integer times;
-    public ComparisonBenchmark(AbstractBenchmark java, AbstractBenchmark Native, Integer times) {
+    private final String name;
+    public ComparisonBenchmark(AbstractBenchmark java, AbstractBenchmark Native, Integer times, String name) {
         javaBase = java;
         nativeBase = Native;
         this.times = times;
+        this.name = name;
     }
 
     /**
@@ -31,7 +33,7 @@ public class ComparisonBenchmark {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return new ComparisonResults(nativeResults,javaResults);
+        return new ComparisonResults(nativeResults,javaResults, name, times);
     }
     /**
      * Gets the results of the java benchmark

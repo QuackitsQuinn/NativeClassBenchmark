@@ -6,13 +6,16 @@ public class ComparisonResults {
     private final BenchmarkResults nativeBenchmark, javaBenchmark;
     private final Base faster;
     private final long difference;
+    private final int runTimes;
+    private final String name;
 
     /**
      * Results of a native/java comparison benchmark
      * @param nativeBenchmark the native based benchmark
      * @param javaBenchmark the java based benchmark
+     * @param runTimes the number of times the benchmark was run
      */
-    public ComparisonResults(BenchmarkResults nativeBenchmark, BenchmarkResults javaBenchmark) {
+    public ComparisonResults(BenchmarkResults nativeBenchmark, BenchmarkResults javaBenchmark, String name, int runTimes){
         this.nativeBenchmark = nativeBenchmark;
         this.javaBenchmark = javaBenchmark;
         difference = Math.abs(this.nativeBenchmark.getElapsedTime()-this.javaBenchmark.getElapsedTime());
@@ -21,6 +24,8 @@ public class ComparisonResults {
         } else {
             faster = Base.JAVA;
         }
+        this.runTimes = runTimes;
+        this.name = name;
         }
 
     /**
@@ -53,6 +58,19 @@ public class ComparisonResults {
      */
     public long getDifference() {
         return difference;
+    }
+    public void print() {
+        String faster = getFaster().toString();
+        System.out.println("┌┤" + name);
+        System.out.println("│┌┤Java Results");
+        System.out.println("│├┤ Total Time: " + javaBenchmark.getElapsedTime() + "ns");
+        System.out.println("│└┤ Average Time Per Run: " + javaBenchmark.getAvgPerRun() + "ns");
+        System.out.println("│");
+        System.out.println("│┌┤Native Results");
+        System.out.println("│├┤ Total Time: " + nativeBenchmark.getElapsedTime() + "ns");
+        System.out.println("│└┤ Average Time Per Run: " + nativeBenchmark.getAvgPerRun() + "ns");
+        System.out.println("├┤" + faster + " was faster by " + getDifference() + "ns");
+        System.out.println("└┤ Runs: " + runTimes);
     }
 }
 

@@ -16,21 +16,7 @@ public class BenchmarkRunner {
     public void runBenchmarks() {
 
         for (ComparisonBenchmark benchmark : benchmarks) {
-            benchmark.run();
+            benchmark.run().print();
         }
-    }
-    private void printBenchmarkResults(ComparisonResults benchmark) {
-        BenchmarkResults javaResults = benchmark.getJavaBenchmark();
-        BenchmarkResults nativeResults = benchmark.getNativeBenchmark();
-        System.out.println("┌┤"+javaResults.getName());
-        System.out.println("┌┤Java Results");
-        System.out.println("├┤ Total Time: " + javaResults.getElapsedTime() + "ns");
-        System.out.println("├┤ Average Time Per Run: " + javaResults.getAvgPerRun() + "ns");
-        System.out.println("└┤ Runs: " + javaResults.getRunTimes());
-        System.out.println();
-        System.out.println("┌┤Native Results");
-        System.out.println("├┤ Total Time: " + nativeResults.getElapsedTime() + "ns");
-        System.out.println("├┤ Average Time Per Run: " + nativeResults.getAvgPerRun() + "ns");
-        System.out.println("└┤ Runs: " + nativeResults.getRunTimes());
     }
 }
