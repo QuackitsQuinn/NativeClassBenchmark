@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7612046a-6118-4390-a28e-bcabd715e1ac" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/python/compile-benchmarks.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/python/compile-benchmarks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +67,7 @@
       <command value="mvn compile" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.Tests.testPrintBenchmarkResults">
+  <component name="RunManager" selected="Makefile Target.all">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="sun.tools.jar.Main" />
       <extension name="coverage">
@@ -89,8 +90,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="all" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/Makefile" target="all" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Makefile Target.all" />
         <item itemvalue="JUnit.Tests.testPrintBenchmarkResults" />
         <item itemvalue="Application.Main" />
       </list>

@@ -1,7 +1,7 @@
 ## Makefile for compiling and moving the rust benchmarks
-## Searches for cargo.toml files in /src/main/rust and compiles them, then moves the binaries to /bin/rust.
+## Searches for cargo.toml files in /src/main/rust and compiles them, then moves the binaries to /bin/lib.
 SRC_DIR = ./src/main/rust
-LIB_DIR = ./bin/libs
+LIB_DIR = ./bin/lib
 PROCESSER = ./src/main/python/compile-benchmarks.py
 
 all:
