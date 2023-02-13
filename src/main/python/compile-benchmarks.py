@@ -57,4 +57,5 @@ class CompileBenchmarks:
 
         
 if __name__ == "__main__":
-    CompileBenchmarks("./src/main/rust","./bin/libs")
+    # CompileBenchmarks("./src/main/rust","./bin/libs")
+    CompileBenchmarks(sys.argv[1],sys.argv[2])
