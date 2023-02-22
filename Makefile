@@ -7,5 +7,12 @@ PROCESSER = ./src/main/python/compile-benchmarks.py
 all:
 	@echo $(PROCESSER) $(SRC_DIR) $(LIB_DIR)
 	@mkdir -p $(LIB_DIR)
-## Sadly, tomllib was introduced in python3.11 so using 3.11 is required.
-	@python3.11 $(PROCESSER) $(SRC_DIR) $(LIB_DIR) 
+## tomllib was introduced in python3.11 so using 3.11 is required.
+	@python3.11 $(PROCESSER) $(SRC_DIR) $(LIB_DIR)
+
+create_headers:
+	@echo "Cleaning to remove old headers"
+	@mvn clean
+	@echo "Creating headers"
+	@mvn compile
+	## TODO: add python script to convert c headers to rust 
