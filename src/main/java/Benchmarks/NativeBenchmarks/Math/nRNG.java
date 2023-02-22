@@ -1,10 +1,11 @@
 package Benchmarks.NativeBenchmarks.Math;
 
 import Benchmarks.Tools.AbstractBenchmark;
+import Benchmarks.Tools.Utils;
 
-public class RNGnative extends AbstractBenchmark {
+public class nRNG extends AbstractBenchmark {
     static {
-        System.loadLibrary("RNGnative");
+        System.load(Utils.getLibString("random_benchmark"));
     }
     @Override
     protected native void setup();

@@ -7,5 +7,5 @@ PROCESSER = ./src/main/python/compile-benchmarks.py
 all:
 	@echo $(PROCESSER) $(SRC_DIR) $(LIB_DIR)
 	@mkdir -p $(LIB_DIR)
-## Sadly, tomllib was introduced in python3.11
+## Sadly, tomllib was introduced in python3.11 so using 3.11 is required.
 	@python3.11 $(PROCESSER) $(SRC_DIR) $(LIB_DIR) 

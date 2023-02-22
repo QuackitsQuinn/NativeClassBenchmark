@@ -1,5 +1,5 @@
 [package]
-name = "random"
+name = "random_benchmark"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 jni = "0.20.0"
+rand = "0.8.5"
 
 [lib]
 crate_type = ["cdylib"]

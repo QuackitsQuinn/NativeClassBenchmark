@@ -1,6 +1,7 @@
 package Benchmarks.Tools.Results;
 
 import Benchmarks.Tools.Base;
+import Benchmarks.Tools.Utils;
 
 public class ComparisonResults {
     private final BenchmarkResults nativeBenchmark, javaBenchmark;
@@ -63,13 +64,13 @@ public class ComparisonResults {
         String faster = getFaster().toString();
         System.out.println("┌┤" + name);
         System.out.println("│┌┤Java Results");
-        System.out.println("│├┤ Total Time: " + javaBenchmark.getElapsedTime() + "ns");
-        System.out.println("│└┤ Average Time Per Run: " + javaBenchmark.getAvgPerRun() + "ns");
+        System.out.println("│├┤ Total Time: " + Utils.formatTime(javaBenchmark.getElapsedTime()));
+        System.out.println("│└┤ Average Time Per Run: " + Utils.formatTime(javaBenchmark.getAvgPerRun()));
         System.out.println("│");
         System.out.println("│┌┤Native Results");
-        System.out.println("│├┤ Total Time: " + nativeBenchmark.getElapsedTime() + "ns");
-        System.out.println("│└┤ Average Time Per Run: " + nativeBenchmark.getAvgPerRun() + "ns");
-        System.out.println("├┤" + faster + " was faster by " + getDifference() + "ns");
+        System.out.println("│├┤ Total Time: " + Utils.formatTime(nativeBenchmark.getElapsedTime()));
+        System.out.println("│└┤ Average Time Per Run: " + Utils.formatTime(nativeBenchmark.getAvgPerRun()));
+        System.out.println("├┤" + faster + " was faster by " + Utils.formatTime(getDifference()));
         System.out.println("└┤ Runs: " + runTimes);
     }
 }
