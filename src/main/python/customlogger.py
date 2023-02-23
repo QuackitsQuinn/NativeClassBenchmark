@@ -16,7 +16,7 @@ class Logger:
     def debug(self, message: str) -> None:
         """Log a debug message. """
         if self._should_log(self.Level.DEBUG):
-            print(f"\033[0;34mDEBUG from {self.name}: {message}\033[0m")
+            print(f"\033[0;2mDEBUG from {self.name}: {message}\033[0m")
     def info(self, message: str) -> None:
         """Log an info message."""
         if self._should_log(self.Level.INFO):

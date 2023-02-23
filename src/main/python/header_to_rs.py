@@ -1,8 +1,8 @@
 """Convert C headers to Rust FFI bindings.
 """
 import os
-
-
+import customlogger # pylint: disable=import-error 
+# ^ Weirld __init__.py stuff to make imports work
 class HtoRs:
     """ Convert C headers to Rust FFI bindings.
     """
@@ -19,15 +19,21 @@ class HtoRs:
     def __init__(self, fname: str, dest: str):
         """Initializes and processes the header file."""
         # TODO: Add logging
+        self.logger = customlogger.Logger("HeaderToRust", customlogger.Logger.Level.INFO)
         self.file_name = os.path.abspath(fname)
         self.jni_deps = ["JNIEnv", "objects::JObject"]  # Raw jni dep paths
         self.sysdeps = []  # jni sys deps
         self.dest = os.path.abspath(dest)
         self.methods = self.extract_methods()
+        if len(self.methods) == 0:
+            self.logger.failure(f"Failed to extract methods from {self.file_name}.")
         self.methods = [self.remove_unused(m) for m in self.methods]
         self.methsign = [self.to_method_signature(m) for m in self.methods]
         self.rust_methods = [self.method_sig_to_rust(m) for m in self.methsign]
-        print(self.build_file(self.rust_methods))
+        self.built = self.build_file(self.rust_methods)
+        self.logger.info(f"Built {len(self.rust_methods)} methods.")
+        self.write_file()
+        self.logger.success(f"Successfully wrote {self.dest}.")
 
     def add_dep(self, dep: str) -> None:
         """Add a dependency to the JNIdeps list."""
@@ -40,19 +46,22 @@ class HtoRs:
         methods = []
         lastline = ""
         lastlineismethod = False
-        with open(self.file_name, "r") as f:
-            lines = f.readlines()
-            for line in lines:
-                if line.startswith("JNIEXPORT"):
-                    lastline = line
-                    lastlineismethod = True
-                elif lastlineismethod:
-                    lastline = self.remove_newlines(lastline).lstrip().rstrip()
-                    lastline += line.lstrip().rstrip()
-                    lastline = self.remove_newlines(lastline)
-                    methods.append(lastline)
-                    print(lastline)
-                    lastlineismethod = False
+        try:
+            with open(self.file_name, "r") as f:
+                lines = f.readlines()
+                for line in lines:
+                    if line.startswith("JNIEXPORT"):
+                        lastline = line
+                        lastlineismethod = True
+                    elif lastlineismethod:
+                        lastline = self.remove_newlines(lastline).lstrip().rstrip()
+                        lastline += line.lstrip().rstrip()
+                        lastline = self.remove_newlines(lastline)
+                        methods.append(lastline)
+                        lastlineismethod = False
+        except Exception as e:
+            self.logger.fatal(f"Error reading file {self.file_name}: {e}")
+        self.logger.info(f"Found {len(methods)} methods.")
         return methods
 
     def remove_newlines(self, string: str):
@@ -74,9 +83,7 @@ class HtoRs:
         return_type = string.split(" ")[0]
         name = string.split(" ")[2].split("(")[0]
         args = string.split("(")[1].split(",")
-        print(f"return type: {return_type}")
-        print(f"name: {name}")
-        print(f"args: {args}")
+        self.logger.debug(f"Found method {name} with args {args}")
         return self.MethodSig(name, return_type, args)
 
     def method_sig_to_rust(self, method_sig: MethodSig):
@@ -87,7 +94,6 @@ class HtoRs:
             arg = arg.lstrip().rstrip()
             if arg.endswith(");"):
                 arg = arg[:-2]
-            print(f"arg: {arg}")
             argnum += 1
             if arg == "JNIEnv":
                 arg_dict["_env"] = "JNIEnv"
@@ -99,14 +105,15 @@ class HtoRs:
         if method_sig.ret_type == "void":
             method_sig.ret_type = "()"
         args = ", ".join([f"{arg}: {arg_dict[arg]}" for arg in arg_dict])
-        return f'pub extern "System" fn {method_sig.name}({args}) -> {method_sig.ret_type} {{\n\t\n}}'
+        self.logger.debug(f"Converted {method_sig.name} to rust method with args ({args})")
+        return f'#[no_mangle]\npub extern "System" fn {method_sig.name}({args}) -> {method_sig.ret_type} {{\n\t\n}}'
 
     def build_deps(self) -> str:
         """Build the dependencies for the file."""
         sysdepstring = ""
         if len(self.sysdeps) > 0:
             sysdepstring = f",sys::{{{', '.join(self.sysdeps)}}}"
-
+        self.logger.debug(f"Building deps with {self.jni_deps} and {self.sysdeps}")
         return f"use jni::{{{', '.join(self.jni_deps)}{sysdepstring}}};"
 
     def build_file(self, methods: list) -> str:
@@ -115,10 +122,39 @@ class HtoRs:
         for method in methods:
             file += f"{method} \n\n"
         return file
+    def write_file(self) -> None:
+        """Writes the file to the destination."""
+        self.logger.info(f"Writing file to {self.dest}")
+        if not os.path.exists(os.path.dirname(self.dest)):
+            os.makedirs(os.path.dirname(self.dest))
+        with open(self.dest, "w") as f:
+            f.write(self.built)
+class convFolder:
+    """Converts all headers in a folder to rust files."""
+    def __init__(self, folder: str, dest: str):
+        """Initializes and processes the folder."""
+        self.logger = customlogger.Logger("All", customlogger.Logger.Level.INFO)
+        self.folder = os.path.abspath(folder)
+        self.dest = os.path.abspath(dest)
+        self.files = self.get_files()
+        self.logger.info(f"Found {len(self.files)} files to convert.")
+        self.converted = []
+        for file in self.files:
+            self.logger.info(f"Converting {file}")
+            self.converted.append(
+                HtoRs(file, file.replace(self.folder, self.dest).replace(".h", ".rs"))
+            )
+            self.logger.success(f"Successfully converted {file}")
+        self.logger.success(f"Successfully converted {len(self.converted)} files.")
 
+    def get_files(self) -> list:
+        """Get all files in the folder."""
+        files = []
+        for root, _, file in os.walk(self.folder):
+            for f in file:
+                if f.endswith(".h"):
+                    files.append(os.path.join(root, f))
+        return files
 
 if __name__ == "__main__":
-    HtoRs(
-        "./target/headers/Benchmarks_NativeBenchmarks_String_nReplace.h",
-        "./target/rust/Benchmarks_NativeBenchmarks_String_nReplace.rs",
-    )
+    convFolder("./target/headers", "./target/rust")
