@@ -1,6 +1,7 @@
 """Convert C headers to Rust FFI bindings.
 """
 import os
+import sys
 import customlogger # pylint: disable=import-error 
 # ^ Weirld __init__.py stuff to make imports work
 class HtoRs:
@@ -157,4 +158,4 @@ class convFolder:
         return files
 
 if __name__ == "__main__":
-    convFolder("./target/headers", "./target/rust")
+    convFolder(sys.argv[1], sys.argv[2])

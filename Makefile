@@ -9,10 +9,13 @@ all:
 	@mkdir -p $(LIB_DIR)
 ## tomllib was introduced in python3.11 so using 3.11 is required.
 	@python3.11 $(PROCESSER) $(SRC_DIR) $(LIB_DIR)
-
+HEADER_DIR = ./target/headers
+RUST_DIR = ./target/rust
+CONVERTER = ./src/main/python/header_to_rs.py
+## Converts the headers to rust forign function declarations.
 create_headers:
 	@echo "Cleaning to remove old headers"
 	@mvn clean
 	@echo "Creating headers"
 	@mvn compile
-	## TODO: add python script to convert c headers to rust 
+	@python3.11 $(CONVERTER) $(HEADER_DIR) $(RUST_DIR)
