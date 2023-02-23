@@ -2,7 +2,10 @@ import os
 
 
 class HtoRs:
+    """ Convert C headers to Rust FFI bindings.
+    """
     class method_sig:
+        """A method signature."""
         def __init__(self, name: str, ret_type: str, args: list):
             self.name = name
             self.ret_type = ret_type
@@ -11,10 +14,10 @@ class HtoRs:
         def __repr__(self):
             return f"method_sig(name={self.name}, ret_type={self.ret_type}, args={self.args})"
 
-    """ Convert C headers to Rust FFI bindings.
-    """
 
     def __init__(self, fname: str, dest: str):
+        """Initializes and processes the header file."""
+        # TODO: Add logging
         self.file_name = os.path.abspath(fname)
         self.JNIdeps = ["JNIEnv", "objects::JObject"]  # Raw jni dep paths
         self.sysdeps = []  # jni sys deps
@@ -25,12 +28,14 @@ class HtoRs:
         self.rust_methods = [self.method_sig_to_rust(m) for m in self.methsign]
         print(self.build_file(self.rust_methods))
 
-    def add_dep(self, dep: str):
+    def add_dep(self, dep: str) -> None:
         """Add a dependency to the JNIdeps list."""
-        _ = self.JNIdeps.append(dep) if dep not in self.JNIdeps else None
+        _ = self.JNIdeps.append(dep) if dep not in self.JNIdeps else None # i like this for no reason
 
-    def extract_methods(self):
-        """Extract methods from header file."""
+    def extract_methods(self) -> list:
+        """Extract methods from header file.
+           Only place where the header file is read.
+        """
         methods = []
         lastline = ""
         lastlineismethod = False
@@ -50,9 +55,11 @@ class HtoRs:
         return methods
 
     def remove_newlines(self, string: str):
-        return "".join(string.splitlines())
+        """Remove newlines from a string."""
+        return "".join(string.splitlines()) # weird but works
 
     def remove_unused(self, string: str):
+        """Remove unused parts of a method declaration and clean it up."""
         return (
             string.replace("JNIEXPORT", "")
             .replace("JNICALL", "")
@@ -72,6 +79,7 @@ class HtoRs:
         return self.method_sig(name, return_type, args)
 
     def method_sig_to_rust(self, method_sig: method_sig):
+        """Convert a method signature to a rust method."""
         arg_dict = {}
         argnum = 0
         for arg in method_sig.args:
@@ -92,11 +100,7 @@ class HtoRs:
         args = ", ".join([f"{arg}: {arg_dict[arg]}" for arg in arg_dict])
         return f'pub extern "System" fn {method_sig.name}({args}) -> {method_sig.ret_type} {{\n\t\n}}'
 
-    def gen_uses(self):
-        """Generate the use statements for the file."""
-        return "\n".join([f"use super::{dep};" for dep in self.JNIdeps])
-
-    def build_deps(self):
+    def build_deps(self) -> str:
         """Build the dependencies for the file."""
         sysdepstring = ""
         if len(self.sysdeps) > 0:
@@ -104,7 +108,8 @@ class HtoRs:
 
         return f"use jni::{{{', '.join(self.JNIdeps)}{sysdepstring}}};"
 
-    def build_file(self, methods: list):
+    def build_file(self, methods: list) -> str:
+        """Compiles all of the funky information into a rust ffi file."""
         file = f"{self.build_deps()}\n\n\n"
         for method in methods:
             file += f"{method} \n\n"
