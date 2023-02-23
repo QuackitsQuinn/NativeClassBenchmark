@@ -1,16 +1,17 @@
+"""Convert C headers to Rust FFI bindings.
+"""
 import os
 
 
 class HtoRs:
     """ Convert C headers to Rust FFI bindings.
     """
-    class method_sig:
+    class MethodSig:
         """A method signature."""
         def __init__(self, name: str, ret_type: str, args: list):
             self.name = name
             self.ret_type = ret_type
             self.args = args
-
         def __repr__(self):
             return f"method_sig(name={self.name}, ret_type={self.ret_type}, args={self.args})"
 
@@ -19,7 +20,7 @@ class HtoRs:
         """Initializes and processes the header file."""
         # TODO: Add logging
         self.file_name = os.path.abspath(fname)
-        self.JNIdeps = ["JNIEnv", "objects::JObject"]  # Raw jni dep paths
+        self.jni_deps = ["JNIEnv", "objects::JObject"]  # Raw jni dep paths
         self.sysdeps = []  # jni sys deps
         self.dest = os.path.abspath(dest)
         self.methods = self.extract_methods()
@@ -30,7 +31,7 @@ class HtoRs:
 
     def add_dep(self, dep: str) -> None:
         """Add a dependency to the JNIdeps list."""
-        _ = self.JNIdeps.append(dep) if dep not in self.JNIdeps else None # i like this for no reason
+        _ = self.jni_deps.append(dep) if dep not in self.jni_deps else None # i like this for no reason
 
     def extract_methods(self) -> list:
         """Extract methods from header file.
@@ -76,9 +77,9 @@ class HtoRs:
         print(f"return type: {return_type}")
         print(f"name: {name}")
         print(f"args: {args}")
-        return self.method_sig(name, return_type, args)
+        return self.MethodSig(name, return_type, args)
 
-    def method_sig_to_rust(self, method_sig: method_sig):
+    def method_sig_to_rust(self, method_sig: MethodSig):
         """Convert a method signature to a rust method."""
         arg_dict = {}
         argnum = 0
@@ -106,7 +107,7 @@ class HtoRs:
         if len(self.sysdeps) > 0:
             sysdepstring = f",sys::{{{', '.join(self.sysdeps)}}}"
 
-        return f"use jni::{{{', '.join(self.JNIdeps)}{sysdepstring}}};"
+        return f"use jni::{{{', '.join(self.jni_deps)}{sysdepstring}}};"
 
     def build_file(self, methods: list) -> str:
         """Compiles all of the funky information into a rust ffi file."""
